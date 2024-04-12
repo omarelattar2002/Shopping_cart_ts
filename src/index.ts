@@ -1,20 +1,104 @@
 import { v4 as uuidv4 } from 'uuid';
 
 
-type Item = {
-    readonly id:string
-    name:string
-    price:number
-    description: string
+class Item {
+    private _id: string;
+    private _name: string;
+    private _price: number;
+    private _description: string;
+
+    constructor(name: string, price: number, description: string) {
+        this._id = uuidv4();
+        this._name = name;
+        this._price = price;
+        this._description = description;
+    }
+    get id(): string {
+        return this._id;
+    }
+
+    get name(): string {
+        return this._name;
+    }
+
+    get price(): number {
+        return this._price;
+    }
+
+    get description(): string {
+        return this._description;
+    }
+
+    set name(name: string) {
+        this._name = name;
+    }
+
+    set price(price: number) {
+        this._price = price;
+    }
+
+    set description(description: string) {
+        this._description = description;
+    }
+
 }
 
+class User {
+    private _id: string;
+    private _name: string;
+    private _age: number;
+    private _cart: Item[];
 
-type User = {
-    readonly id:string
-    name:string
-    age:number
-    cart: Item[]
+    constructor(name: string, age: number, cart: Item[] = []) {
+        this._id = uuidv4();
+        this._name = name;
+        this._age = age;
+        this._cart = cart;
+    }
+
+
+    get id(): string {
+        return this._id;
+    }
+
+    get name(): string {
+        return this._name;
+    }
+
+    get age(): number {
+        return this._age;
+    }
+
+    get cart(): Item[] {
+        return this._cart;
+    }
+
+
+    set name(name: string) {
+        this._name = name;
+    }
+
+    set age(age: number) {
+        this._age = age;
+    }
+
+    set cart(cart: Item[]) {
+        this._cart = cart;
+    }
+
+
+    addToCart(item: Item): void {
+        this.cart.push(item);
+    }
 }
+
+    removeFromCart(item: Item): void {
+        if (this.cart.includes(item)) {
+            this.cart = this.cart.filter((cartItem) => cartItem !== item);
+        } else {
+            console.log(`Item ${item.name} not in the cart!`);
+        }
+    }
 
 function createUser(name:string, age:number):User{
     const newUser:User = {
@@ -54,7 +138,7 @@ function removeQuantityfromcart(user:User,item:Item,quantity:number):void{
         let itemIndex = user.cart.findIndex( cartItem => cartItem.id == item.id)
         user.cart.splice(itemIndex,1)
     }
-    console.log(`${quantity} ${item.name} have been removed your cart `)
+    console.log(`${quantity} ${item._name} have been removed your cart `)
 }
 
 function carTotal(user:User):void{
