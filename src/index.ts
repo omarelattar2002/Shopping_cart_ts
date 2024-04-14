@@ -56,7 +56,6 @@ class User {
         this._cart = cart;
     }
 
-
     get id(): string {
         return this._id;
     }
@@ -90,7 +89,6 @@ class User {
     addToCart(item: Item): void {
         this.cart.push(item);
     }
-}
 
     removeFromCart(item: Item): void {
         if (this.cart.includes(item)) {
@@ -99,86 +97,126 @@ class User {
             console.log(`Item ${item.name} not in the cart!`);
         }
     }
-
-function createUser(name:string, age:number):User{
-    const newUser:User = {
-        id: uuidv4(),
-        name, 
-        age,
-        cart:[]
+    removeQuantityfromcart(user:User,item:Item,quantity:number):void{
+        for (let i=0; i < quantity; i++){
+            let itemIndex = user.cart.findIndex( cartItem => cartItem.id == item.id)
+            user.cart.splice(itemIndex,1)
+        }
+        console.log(`${quantity} ${item.name} have been removed your cart `)
     }
-    return newUser
-}
-
-
-
-
-function createItem(name:string,price:number,description:string):Item{
-    return {
-        id:uuidv4(),
-        name,
-        price,
-        description
+    carTotal(user:User):void{
+        let total = 0
+        for (let item of user.cart){
+            total += item.price
+        }
+        console.log(`Here is the total price of your cart ${total}$`)
     }
-}
-
-
-
-function addtoCart(user:User,item:Item):void{
-    user.cart.push(item);
-}
-
-function removefromCart(user:User,item:Item):void{
-    user.cart = user.cart.filter( cartItem => cartItem.id !== item.id)
-}
-
-
-function removeQuantityfromcart(user:User,item:Item,quantity:number):void{
-    for (let i=0; i < quantity; i++){
-        let itemIndex = user.cart.findIndex( cartItem => cartItem.id == item.id)
-        user.cart.splice(itemIndex,1)
+    printCart(user:User):void{
+        for(let item of user.cart){
+            console.log(item.name)
+        }
     }
-    console.log(`${quantity} ${item._name} have been removed your cart `)
+    
 }
 
-function carTotal(user:User):void{
-    let total = 0
-    for (let item of user.cart){
-        total += item.price
+class Shop {
+    constructor(){this._items = [new Item('Tshirt',9.99,'star wars shirt'),new Item('shoes',29.99,'Nike air max'),new Item('pants',15.99,'levis')]}
+    private _items: Item[];
+
+    public get items(): Item[] {
+        return this._items;
     }
-    console.log(`Here is the total price of your cart ${total}$`)
-}
 
-function printCart(user:User):void{
-    for(let item of user.cart){
-        console.log(item.name)
+    public set items(value: Item[]) {
+        this._items = value;
     }
+
 }
 
 
-let customer1 = createUser('Omar',22);
-console.log(customer1)
 
-let itemA = createItem('Nike Shoes',50,'Air max')
-let itemB = createItem('T-shirt',20,'white stripped adidas')
-let itemC = createItem('Plate',5,'glass plate')
+// function createUser(name:string, age:number):User{
+//     const newUser:User = {
+//         id: uuidv4(),
+//         name, 
+//         age,
+//         cart:[]
+//     }
+//     return newUser
+// }
 
 
-addtoCart(customer1,itemA)
-console.log(customer1.cart)
 
 
-addtoCart(customer1,itemB)
-addtoCart(customer1,itemB)
-addtoCart(customer1,itemB)
-printCart(customer1)
+// function createItem(name:string,price:number,description:string):Item{
+//     return {
+//         id:uuidv4(),
+//         name,
+//         price,
+//         description
+//     }
+// }
 
-addtoCart(customer1,itemC)
-addtoCart(customer1,itemC)
-addtoCart(customer1,itemC)
-printCart(customer1)
-carTotal(customer1)
 
-removefromCart(customer1,itemB)
-printCart(customer1)
 
+// function addtoCart(user:User,item:Item):void{
+//     user.cart.push(item);
+// }
+
+// function removefromCart(user:User,item:Item):void{
+//     user.cart = user.cart.filter( cartItem => cartItem.id !== item.id)
+// }
+
+
+
+// function carTotal(user:User):void{
+//     let total = 0
+//     for (let item of user.cart){
+//         total += item.price
+//     }
+//     console.log(`Here is the total price of your cart ${total}$`)
+// }
+
+// function printCart(user:User):void{
+//     for(let item of user.cart){
+//         console.log(item.name)
+//     }
+// }
+
+
+// let customer1 = createUser('Omar',22);
+// console.log(customer1)
+
+// let itemA = createItem('Nike Shoes',50,'Air max')
+// let itemB = createItem('T-shirt',20,'white stripped adidas')
+// let itemC = createItem('Plate',5,'glass plate')
+
+
+// addtoCart(customer1,itemA)
+// console.log(customer1.cart)
+
+
+// addtoCart(customer1,itemB)
+// addtoCart(customer1,itemB)
+// addtoCart(customer1,itemB)
+// printCart(customer1)
+
+// addtoCart(customer1,itemC)
+// addtoCart(customer1,itemC)
+// addtoCart(customer1,itemC)
+// printCart(customer1)
+// carTotal(customer1)
+
+// removefromCart(customer1,itemB)
+// printCart(customer1)
+
+const user = new User("omar",22)
+
+const shop = new Shop()
+
+user.addToCart(shop.items[1])
+user.addToCart(shop.items[2])
+user.printCart(user)
+user.carTotal(user)
+user.removeFromCart(shop.items[1])
+user.carTotal(user)
